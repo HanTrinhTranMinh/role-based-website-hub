@@ -9,6 +9,9 @@ import GuestLayout from "@/components/layout/GuestLayout";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import LoginForm from "@/components/auth/LoginForm";
 import HomePage from "@/pages/HomePage";
+import About from "@/pages/About";
+import Contact from "@/pages/Contact";
+import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
@@ -22,31 +25,10 @@ const AppRoutes = () => {
       <GuestLayout>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/register" element={
-            <div className="min-h-screen flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-2xl font-bold mb-4">Trang đăng ký</h1>
-                <p className="text-gray-600">Tính năng đăng ký sẽ được phát triển sau</p>
-              </div>
-            </div>
-          } />
-          <Route path="/about" element={
-            <div className="min-h-screen flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-2xl font-bold mb-4">Về chúng tôi</h1>
-                <p className="text-gray-600">Thông tin về công ty</p>
-              </div>
-            </div>
-          } />
-          <Route path="/contact" element={
-            <div className="min-h-screen flex items-center justify-center">
-              <div className="text-center">
-                <h1 className="text-2xl font-bold mb-4">Liên hệ</h1>
-                <p className="text-gray-600">Thông tin liên hệ</p>
-              </div>
-            </div>
-          } />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<LoginForm />} />
         </Routes>
       </GuestLayout>
@@ -87,7 +69,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
 
-        {/* Other role-specific routes */}
+        {/* Receptionist routes */}
         <Route path="/payments" element={
           <ProtectedRoute allowedRoles={['receptionist']}>
             <div className="text-center py-8">
@@ -106,6 +88,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
 
+        {/* Other role-specific routes */}
         <Route path="/promotions" element={
           <ProtectedRoute allowedRoles={['marketing']}>
             <div className="text-center py-8">
