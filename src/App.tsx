@@ -18,6 +18,9 @@ import CustomerDashboard from "@/pages/customer/CustomerDashboard";
 import AppointmentBooking from "@/pages/customer/AppointmentBooking";
 import CustomerProfile from "@/pages/customer/CustomerProfile";
 import ServiceCatalog from "@/pages/customer/ServiceCatalog";
+import AppointmentManagement from "@/pages/receptionist/AppointmentManagement";
+import PaymentProcessing from "@/pages/receptionist/PaymentProcessing";
+import CustomerManagement from "@/pages/receptionist/CustomerManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -74,28 +77,19 @@ const AppRoutes = () => {
         {/* Receptionist routes */}
         <Route path="/appointments" element={
           <ProtectedRoute allowedRoles={['receptionist']}>
-            <div className="text-center py-8">
-              <h1 className="text-2xl font-bold mb-4">Quản lý lịch hẹn</h1>
-              <p className="text-gray-600">Tính năng đang được phát triển</p>
-            </div>
+            <AppointmentManagement />
           </ProtectedRoute>
         } />
         
         <Route path="/payments" element={
           <ProtectedRoute allowedRoles={['receptionist']}>
-            <div className="text-center py-8">
-              <h1 className="text-2xl font-bold mb-4">Xử lý thanh toán</h1>
-              <p className="text-gray-600">Tính năng đang được phát triển</p>
-            </div>
+            <PaymentProcessing />
           </ProtectedRoute>
         } />
         
         <Route path="/customers" element={
           <ProtectedRoute allowedRoles={['receptionist']}>
-            <div className="text-center py-8">
-              <h1 className="text-2xl font-bold mb-4">Quản lý khách hàng</h1>
-              <p className="text-gray-600">Tính năng đang được phát triển</p>
-            </div>
+            <CustomerManagement />
           </ProtectedRoute>
         } />
 
