@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import GuestLayout from "@/components/layout/GuestLayout";
+import CustomerLayout from "@/components/layout/CustomerLayout";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import LoginForm from "@/components/auth/LoginForm";
 import HomePage from "@/pages/HomePage";
@@ -13,12 +14,16 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
+import CustomerDashboard from "@/pages/customer/CustomerDashboard";
+import AppointmentBooking from "@/pages/customer/AppointmentBooking";
+import CustomerProfile from "@/pages/customer/CustomerProfile";
+import ServiceCatalog from "@/pages/customer/ServiceCatalog";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated) {
     return (
@@ -35,15 +40,40 @@ const AppRoutes = () => {
     );
   }
 
+  // Customer gets special layout
+  if (user?.role === 'customer') {
+    return (
+      <CustomerLayout>
+        <Routes>
+          <Route path="/" element={<CustomerDashboard />} />
+          <Route path="/dashboard" element={<CustomerDashboard />} />
+          <Route path="/services" element={<ServiceCatalog />} />
+          <Route path="/appointments" element={<AppointmentBooking />} />
+          <Route path="/profile" element={<CustomerProfile />} />
+          <Route path="/membership" element={
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">Thẻ Hội Viên</h1>
+              <p className="text-gray-600">Tính năng đang được phát triển</p>
+            </div>
+          } />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </CustomerLayout>
+    );
+  }
+
+  // Other roles get dashboard layout
   return (
     <DashboardLayout>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         
-        {/* Customer routes */}
+        {/* Receptionist routes */}
         <Route path="/appointments" element={
-          <ProtectedRoute allowedRoles={['customer', 'receptionist']}>
+          <ProtectedRoute allowedRoles={['receptionist']}>
             <div className="text-center py-8">
               <h1 className="text-2xl font-bold mb-4">Quản lý lịch hẹn</h1>
               <p className="text-gray-600">Tính năng đang được phát triển</p>
@@ -51,25 +81,6 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } />
         
-        <Route path="/profile" element={
-          <ProtectedRoute allowedRoles={['customer']}>
-            <div className="text-center py-8">
-              <h1 className="text-2xl font-bold mb-4">Thông tin cá nhân</h1>
-              <p className="text-gray-600">Tính năng đang được phát triển</p>
-            </div>
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/membership" element={
-          <ProtectedRoute allowedRoles={['customer']}>
-            <div className="text-center py-8">
-              <h1 className="text-2xl font-bold mb-4">Thẻ hội viên</h1>
-              <p className="text-gray-600">Tính năng đang được phát triển</p>
-            </div>
-          </ProtectedRoute>
-        } />
-
-        {/* Receptionist routes */}
         <Route path="/payments" element={
           <ProtectedRoute allowedRoles={['receptionist']}>
             <div className="text-center py-8">
