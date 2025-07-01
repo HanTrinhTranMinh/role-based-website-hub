@@ -97,7 +97,7 @@ const getNavigationItems = (role: string) => {
 
 export const AppSidebar: React.FC = () => {
   const { user } = useAuth();
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
   const location = useLocation();
 
   if (!user) {
@@ -106,9 +106,10 @@ export const AppSidebar: React.FC = () => {
 
   const navigationItems = getNavigationItems(user.role);
   const currentPath = location.pathname;
+  const isCollapsed = state === 'collapsed';
 
   return (
-    <Sidebar className={collapsed ? 'w-14' : 'w-64'} collapsible>
+    <Sidebar className={isCollapsed ? 'w-14' : 'w-64'} collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
@@ -128,7 +129,7 @@ export const AppSidebar: React.FC = () => {
                       }
                     >
                       <item.icon className="h-4 w-4 flex-shrink-0" />
-                      {!collapsed && <span>{item.title}</span>}
+                      {!isCollapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
